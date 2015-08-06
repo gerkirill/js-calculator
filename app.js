@@ -46,6 +46,9 @@ OperandStack.prototype.getResult = function() {
    if (this.stack.length !== 1) throw "There should be exactly one value in operand stack, but it is " + this.stack.length + " here";
    return this.stack[0];
 }
+OperandStack.prototype.clear = function() {
+    this.stack.length = 0;
+}
 
 function OperatorStack(){
     this.stack = [];
@@ -69,6 +72,9 @@ OperatorStack.prototype.pop = function() {
 OperatorStack.prototype.getLength = function() {
     return this.stack.length;
 }
+OperatorStack.prototype.clear = function() {
+    this.stack.length = 0;
+}
 
 function Calculator() {
     this.operandStack = new OperandStack();
@@ -85,6 +91,8 @@ Calculator.prototype.setupOperators = function() {
     this.operators.addOperator(new Operator('v', OPERATOR_PRIORITY.HIGH, function(x) { return Math.sqrt(x) }, 1));
 }
 Calculator.prototype.calculate = function(tokens) {
+    this.operandStack.clear();
+    this.operatorStack.clear();
     this.processAllTokens(tokens);
     this.emptyOperatorStack();
     return this.operandStack.getResult();
